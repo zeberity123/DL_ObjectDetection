@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.datasets import fashion_mnist
+from keras.datasets import fashion_mnist
 
 (train_input, train_target) , (test_input, test_target) = fashion_mnist.load_data()
 
@@ -23,7 +23,7 @@ train_scaled, val_scaled, train_target , val_target = train_test_split(train_sca
 print(len(train_scaled)) # 48000
 print(len(val_scaled)) # 12000
 
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 CNN_NewModel = load_model('best-cnn-model.h5')
 #예측
 preds = CNN_NewModel.predict(val_scaled)
@@ -40,17 +40,20 @@ print('\nval_loss : %.4f, val_accuracy : %.4f' %(val_loss, val_accuracy))
 import cv2  # opencv-python 4.4.0.46 버전 설치
 import numpy as np
 
-img_path = 'sandal_1.jpg'
+# img_path = 'sandal_1.jpg'
+img_path = 'mstb.jpg'
 img = cv2.imread(img_path,0)  # flag 0 일 경우 Grayscale로 이미지 읽어들임
-# cv2.imshow('sandal', img)
+cv2.imshow('mstb', img)
+# k = cv2.waitKey(4)
 # print(img)
-# k = cv2.waitKey(0)  # 이미지 출력 상태로 임의의 키 입력할때 까지 무한 대기
-# if k == 27:  # esc key 입력
-#     cv2.destroyAllWindows()
+k = cv2.waitKey(0)  # 이미지 출력 상태로 임의의 키 입력할때 까지 무한 대기
+if k == 27:  # esc key 입력
+    cv2.destroyAllWindows()
 
 # (28, 28) 크기로 이미지 사이즈 조정
 img_resize = cv2.resize(img, dsize=(28,28),interpolation=cv2.INTER_AREA)
 # cv2.imshow('sandal_resize',img_resize)
+# cv2.imshow('mstb_resize',img_resize)
 # print(img_resize)
 # cv2.waitKey(0)  # 이미지 출력 상태로 임의의 키 입력할때 까지 무한 대기
 # cv2.destroyAllWindows()
@@ -74,17 +77,17 @@ preds = CNN_NewModel.predict(new_img[0:1])
 np.set_printoptions(precision=3, suppress=True)
 print(preds)
 
-# import matplotlib.pyplot as plt
-# plt.bar(range(0,10), preds[0])
-# plt.xlabel('class')  # 카테고리 클래스
-# plt.ylabel('prob.')  # 예측 추정치
-# plt.show()
+import matplotlib.pyplot as plt
+plt.bar(range(0,10), preds[0])
+plt.xlabel('class')  # 카테고리 클래스
+plt.ylabel('prob.')  # 예측 추정치
+plt.show()
 
 classes = ['티셔츠', '바지', '스웨터', '드레스','코트', '샌달', '셔츠', '스니커즈', '가방', '앵클부츠']
 # preds 가장 큰 인덱스 찾아 리스트 인덱스 색인
 print(classes[np.argmax(preds)])
 
-# #test 셋 데이터 평가
-# test_scaled = test_input.reshape(-1, 28, 28, 1) / 255.0
-#
-# print('\n Tes Accuracy : %.4f' %(model.evaluate(test_scaled, test_target,verbose=0)[1]) )
+# # #test 셋 데이터 평가
+# # test_scaled = test_input.reshape(-1, 28, 28, 1) / 255.0
+# #
+# # print('\n Tes Accuracy : %.4f' %(model.evaluate(test_scaled, test_target,verbose=0)[1]) )
